@@ -117,7 +117,7 @@
            <string>Floral</string>
           </property>
           <property name="autoFillBackground">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -861,7 +861,7 @@ p, li { white-space: pre-wrap; }
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>16</pointsize>
+     <pointsize>14</pointsize>
     </font>
    </property>
   </action>
@@ -876,6 +876,11 @@ p, li { white-space: pre-wrap; }
    <property name="toolTip">
     <string>About this app</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
   </action>
   <action name="action_save_as">
    <property name="icon">
@@ -887,6 +892,11 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="toolTip">
     <string>Save coffee infomation</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
   </action>
  </widget>
