@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>955</width>
-    <height>560</height>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>16</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
@@ -53,8 +53,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Tropical fruit</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -72,8 +75,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Berry fruit</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -91,8 +97,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Stone fruit</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -110,7 +119,7 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
           </property>
           <property name="statusTip">
@@ -135,8 +144,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Nutty</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -154,8 +166,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Citrus fruit</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -173,8 +188,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Spices</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -192,8 +210,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Cocoa</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -206,32 +227,16 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
-         <widget class="QLabel" name="label_sweet">
-          <property name="font">
-           <font>
-            <family>Arial</family>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(255, 255, 255);</string>
-          </property>
-          <property name="text">
-           <string>Sweet</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="2">
          <widget class="QLabel" name="label_burnt">
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Burnt</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -249,8 +254,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Cereal</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -268,7 +276,7 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
           </property>
           <property name="statusTip">
@@ -290,8 +298,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Other fruit</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -309,8 +320,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Butter/Milky</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -328,8 +342,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Fermented</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -347,8 +364,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Sour</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -366,8 +386,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Alcohol</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -385,8 +408,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Fresh vegetable</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -404,8 +430,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Dry vegetable</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -423,8 +452,11 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Papery/Musty</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -442,14 +474,39 @@
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Chemical</string>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
           </property>
           <property name="text">
            <string>Chemical</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QLabel" name="label_sweet">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="statusTip">
+           <string>Sweet</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="text">
+           <string>Sweet</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -476,7 +533,7 @@
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>16</pointsize>
+          <pointsize>22</pointsize>
          </font>
         </property>
         <property name="text">
@@ -488,20 +545,14 @@
        </widget>
       </item>
       <item>
-       <widget class="Line" name="line">
+       <widget class="Line" name="line_5">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLCDNumber" name="lcdNumber_agtron">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+       <widget class="QLabel" name="label_agtron">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -511,29 +562,17 @@
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>12</pointsize>
+          <pointsize>14</pointsize>
          </font>
-        </property>
-        <property name="toolTip">
-         <string>Agtron number</string>
         </property>
         <property name="statusTip">
          <string>Agtron number</string>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
+        <property name="text">
+         <string>0.0</string>
         </property>
-        <property name="smallDecimalPoint">
-         <bool>true</bool>
-        </property>
-        <property name="digitCount">
-         <number>4</number>
-        </property>
-        <property name="mode">
-         <enum>QLCDNumber::Dec</enum>
-        </property>
-        <property name="value" stdset="0">
-         <double>50.399999999999999</double>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -547,7 +586,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
       <property name="sizeConstraint">
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
@@ -568,14 +607,8 @@
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>16</pointsize>
+          <pointsize>20</pointsize>
          </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="whatsThis">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Model</string>
@@ -586,52 +619,132 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBox_model">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="Line" name="line_14">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>400</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="statusTip">
-         <string>Select a model</string>
-        </property>
-        <property name="editable">
-         <bool>false</bool>
-        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <property name="text">
-          <string>ResNet18</string>
-         </property>
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Flavor</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </item>
         <item>
-         <property name="text">
-          <string>ResNet50</string>
-         </property>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Agtron number</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_20">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QComboBox" name="comboBox_flavor_model">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>Select a flavor model</string>
+          </property>
+          <property name="statusTip">
+           <string>Select a flavor model</string>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
-         <property name="text">
-          <string>ResNet101</string>
-         </property>
+         <widget class="QComboBox" name="comboBox_agtron_model">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="toolTip">
+           <string>Select an Agtron model</string>
+          </property>
+          <property name="statusTip">
+           <string>Select an Agtron model</string>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_15">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
        </widget>
       </item>
       <item>
@@ -651,7 +764,7 @@
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>16</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
@@ -659,6 +772,13 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_34">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
@@ -686,7 +806,7 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a spectrum file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Select a spectrum file</string>
         </property>
         <property name="statusTip">
          <string>Select a spectrum file</string>
@@ -694,21 +814,13 @@
         <property name="editable">
          <bool>false</bool>
         </property>
-        <item>
-         <property name="text">
-          <string>Sample1</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Sample2</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Sample3</string>
-         </property>
-        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_18">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
        </widget>
       </item>
       <item>
@@ -728,7 +840,7 @@
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>16</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
@@ -736,6 +848,13 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_27">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
@@ -778,6 +897,13 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
+       <widget class="Line" name="line_19">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QPushButton" name="pushButton_predict">
@@ -790,7 +916,7 @@ p, li { white-space: pre-wrap; }
           <property name="font">
            <font>
             <family>Arial</family>
-            <pointsize>16</pointsize>
+            <pointsize>20</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -868,7 +994,7 @@ p, li { white-space: pre-wrap; }
   <action name="action_about">
    <property name="icon">
     <iconset>
-     <normaloff>icons/about.png</normaloff>icons/about.png</iconset>
+     <normaloff>icons/about_2.png</normaloff>icons/about_2.png</iconset>
    </property>
    <property name="text">
     <string>about</string>
