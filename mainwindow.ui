@@ -976,7 +976,7 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="icon">
     <iconset>
-     <normaloff>icons/open.png</normaloff>icons/open.png</iconset>
+     <normaloff>lib/icons/open.png</normaloff>lib/icons/open.png</iconset>
    </property>
    <property name="text">
     <string>open_spectrum</string>
@@ -994,7 +994,7 @@ p, li { white-space: pre-wrap; }
   <action name="action_about">
    <property name="icon">
     <iconset>
-     <normaloff>icons/about_2.png</normaloff>icons/about_2.png</iconset>
+     <normaloff>lib/icons/about_2.png</normaloff>lib/icons/about_2.png</iconset>
    </property>
    <property name="text">
     <string>about</string>
@@ -1011,7 +1011,7 @@ p, li { white-space: pre-wrap; }
   <action name="action_save_as">
    <property name="icon">
     <iconset>
-     <normaloff>icons/savefile.png</normaloff>icons/savefile.png</iconset>
+     <normaloff>lib/icons/savefile.png</normaloff>lib/icons/savefile.png</iconset>
    </property>
    <property name="text">
     <string>save_as</string>

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from numpy import random, zeros, where
 from sys import argv
 from os import getcwd
@@ -29,26 +28,25 @@ from PyQt5.QtWidgets import (
     QStyle
     )
 from mainwindow import Ui_MainWindow
+from lib.model import load_model
+import torch
 
 flavor_colors = ['rgb(221, 9, 103)'] * 2 + ['rgb(221, 26, 29)'] * 5 + ['rgb(237, 181, 3)'] * 3 + ['rgb(21, 123, 43)'] * 2 + \
     ['rgb(6, 163, 183)'] * 2 + ['rgb(203, 72, 41)'] * 2 + ['rgb(175, 31, 59)'] + ['rgb(169, 123, 98)'] * 2 + ['rgb(233, 87, 39)'] * 2
 
 stylesheet ="""
     MainWindow {
-        background-image: url("./icons/ssl.png"); 
+        background-image: url("./lib/icons/ssl.png"); 
         background-repeat: no-repeat; 
         background-position: center;
     }
 
     AboutWindow {
-        background-image: url("./icons/ssl.png"); 
+        background-image: url("./lib/icons/ssl.png"); 
         background-repeat: no-repeat; 
         background-position: center;
     }
 """
-
-def set_label_color(widget, color):
-    widget.setStyleSheet(f"background-color: color;")
 
 class AboutWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -81,7 +79,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Initialize the interface
         '''
         self.setupUi(self)
-        self.setWindowIcon(QIcon('./icons/ssl_2.png')) 
+        self.setWindowIcon(QIcon('./lib/icons/ssl_2.png')) 
         self.setWindowTitle('Nice Coffee App')
         # self.cwd = getcwd()
 
@@ -91,6 +89,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label_burnt, self.label_cereal, self.label_spices, self.label_nutty, self.label_cocoa, self.label_sweet, self.label_butter
             ]
 
+        self.comboBox_flavor_model.addItems(['ResNet18', 'ResNet50', 'ResNet50_focal', 'ResNet101', 'ResNet101_focal', 'ResNet152', 'ResNet152_focal', \
+            'Support vector machine', 'Random forest'])
+        self.comboBox_flavor_model.currentTextChanged.connect(self.select_model)
         '''
         Set the predict button
         '''
@@ -164,19 +165,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         Testing Agtron number
         '''
-        pred_agtron = round(random.random() * (106.0 - 60.0) + 60.0, 1)
-        self.label_agtron.setText(QCoreApplication.translate("MainWindow", f"{pred_agtron:}"))
-        self.label_agtron.setStatusTip(QCoreApplication.translate("MainWindow", f"Agtron number: {pred_agtron:}"))
+        # pred_agtron = round(random.random() * (106.0 - 60.0) + 60.0, 1)
+        # self.label_agtron.setText(QCoreApplication.translate("MainWindow", f"{pred_agtron:}"))
+        # self.label_agtron.setStatusTip(QCoreApplication.translate("MainWindow", f"Agtron number: {pred_agtron:}"))
 
         '''
         Testing flavor
         '''
-        pred_flavor = random.randint(2, size=21)
-        for f in range(pred_flavor.shape[0]):
-            if pred_flavor[f] == 1:
-                self.flavor_labels[f].setStyleSheet(f"background-color: {flavor_colors[f]};")
-            elif pred_flavor[f] == 0:
-                self.flavor_labels[f].setStyleSheet("background-color: rgb(255, 255, 255);")
+        # pred_flavor = random.randint(2, size=21)
+        # for f in range(pred_flavor.shape[0]):
+        #     if pred_flavor[f] == 1:
+        #         self.flavor_labels[f].setStyleSheet(f"background-color: {flavor_colors[f]};")
+        #     elif pred_flavor[f] == 0:
+        #         self.flavor_labels[f].setStyleSheet("background-color: rgb(255, 255, 255);")
+        flavor_model = self.comboBox_flavor_model.currentText()
+        test_sample = random.random(900).reshape(1, 900)
+        print(test_sample.shape)
+        if flavor_model.startswith('Res'):
+            model, device = load_model('./lib/saved_models/flavor/' + flavor_model + '.dlcls')
+            model.train_mode = False
+            model.preprocess_func = None
+            model.predict(torch.tensor(test_sample))
+
+    def select_model(self, model_name):
+        print(model_name)
 
 def main():
 
