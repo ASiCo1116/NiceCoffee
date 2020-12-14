@@ -8,7 +8,7 @@ from PyQt5 import QtCore
 class MplCanvas(FigureCanvasQTAgg):
 
     def __init__(self, parent=None, dpi=75):
-        self.fig = Figure(figsize=(1.5, 1.5), dpi=200)
+        self.fig = Figure(figsize=(1., 1.), dpi=dpi)
         self.axes = self.fig.add_subplot(111)
         self.axes.set_axis_off()
         super().__init__(self.fig)

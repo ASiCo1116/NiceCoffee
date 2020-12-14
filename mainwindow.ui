@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>955</width>
-    <height>563</height>
+    <height>603</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -562,7 +562,7 @@
         <property name="font">
          <font>
           <family>Arial</family>
-          <pointsize>14</pointsize>
+          <pointsize>36</pointsize>
          </font>
         </property>
         <property name="statusTip">
@@ -586,7 +586,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
       <property name="sizeConstraint">
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
@@ -937,34 +937,6 @@ p, li { white-space: pre-wrap; }
         </item>
        </layout>
       </item>
-      <item>
-       <widget class="QProgressBar" name="progressBar">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>400</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="statusTip">
-         <string>Predicting...</string>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-       </widget>
-      </item>
      </layout>
     </item>
    </layout>
@@ -994,7 +966,7 @@ p, li { white-space: pre-wrap; }
   <action name="action_about">
    <property name="icon">
     <iconset>
-     <normaloff>lib/icons/about_2.png</normaloff>lib/icons/about_2.png</iconset>
+     <normaloff>lib/icons/about.png</normaloff>lib/icons/about.png</iconset>
    </property>
    <property name="text">
     <string>about</string>
@@ -1011,7 +983,7 @@ p, li { white-space: pre-wrap; }
   <action name="action_save_as">
    <property name="icon">
     <iconset>
-     <normaloff>lib/icons/savefile.png</normaloff>lib/icons/savefile.png</iconset>
+     <normaloff>lib/icons/save.png</normaloff>lib/icons/save.png</iconset>
    </property>
    <property name="text">
     <string>save_as</string>

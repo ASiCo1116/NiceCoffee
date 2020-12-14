@@ -246,7 +246,6 @@ class ConcatenatedML(MachineLearningModule):
     def _check_input(self, data):
         if not isinstance(data, (np.ndarray, torch.Tensor)):
             raise TypeError('The ML based model only accept numpy.ndarray or torch.Tensor object.')
-
         if isinstance(data, torch.Tensor):
             data = data.cpu().numpy()
 
@@ -257,6 +256,7 @@ class ConcatenatedML(MachineLearningModule):
             data = np.expand_dims(data, axis = 0)
 
         if data_size != self.input_size:
+            print(data_size, self.input_size)
             raise RuntimeError('Size mismatch: input data must be in size: ' + str(self.input_size))
 
         return data

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from numpy import random, zeros, where
+# from matplotlib.pyplot import plot, 
+from pandas import read_excel, read_csv
+from numpy import random, zeros, where, genfromtxt, arange, squeeze, expand_dims
 from sys import argv
 from os import getcwd
 from PyQt5.QtGui import (
@@ -28,21 +30,21 @@ from PyQt5.QtWidgets import (
     QStyle
     )
 from mainwindow import Ui_MainWindow
-from lib.model import load_model
-import torch
+from src.model import CoffeeModel
+from lib.model import SVM, RF, NIRResNet152
 
 flavor_colors = ['rgb(221, 9, 103)'] * 2 + ['rgb(221, 26, 29)'] * 5 + ['rgb(237, 181, 3)'] * 3 + ['rgb(21, 123, 43)'] * 2 + \
     ['rgb(6, 163, 183)'] * 2 + ['rgb(203, 72, 41)'] * 2 + ['rgb(175, 31, 59)'] + ['rgb(169, 123, 98)'] * 2 + ['rgb(233, 87, 39)'] * 2
 
-stylesheet ="""
+stylesheet = """
     MainWindow {
-        background-image: url("./lib/icons/ssl.png"); 
+        background-image: url("./src/icons/ssl.png"); 
         background-repeat: no-repeat; 
         background-position: center;
     }
 
     AboutWindow {
-        background-image: url("./lib/icons/ssl.png"); 
+        background-image: url("./src/icons/ssl.png"); 
         background-repeat: no-repeat; 
         background-position: center;
     }
@@ -59,7 +61,7 @@ class AboutWindow(QMainWindow):
             \nSensing and Spectroscopy Lab (SSL) \
             \nDepartment of BioMechtronics (BiME)\
             \nNational Taiwan University (NTU) \
-            \nUpdated 1091205 ")
+            \nUpdated 1091215 ")
         font = copyright.font()
         
         copyright.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
@@ -83,15 +85,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle('Nice Coffee App')
         # self.cwd = getcwd()
 
+        self.agtron_model = None
+        self.flavor_model = SVM().load('./SVM.svm')
+
+        self.waves = {}
         self.flavor_labels = [
             self.label_floral, self.label_tealike, self.label_tropical, self.label_stone, self.label_citrus, self.label_berry, self.label_other, \
             self.label_sour, self.label_alcohol, self.label_fermented, self.label_fresh, self.label_dry, self.label_papery, self.label_chemical, \
             self.label_burnt, self.label_cereal, self.label_spices, self.label_nutty, self.label_cocoa, self.label_sweet, self.label_butter
             ]
 
-        self.comboBox_flavor_model.addItems(['ResNet18', 'ResNet50', 'ResNet50_focal', 'ResNet101', 'ResNet101_focal', 'ResNet152', 'ResNet152_focal', \
-            'Support vector machine', 'Random forest'])
-        self.comboBox_flavor_model.currentTextChanged.connect(self.select_model)
+        self.comboBox_flavor_model.addItems(['Support vector machine (SVM)', 'Random forest (RF)', 'ResNet152focal (DCNN)'])
+        self.comboBox_flavor_model.currentTextChanged.connect(self.select_flavor_model)
+        self.comboBox_agtron_model.addItems(['Narrow (700-900, 1160-1260)', 'Wide (700-2500)', 'CARS (selected wavenumbers)', 'ResNet18 (DCNN)'])
+        self.comboBox_agtron_model.currentTextChanged.connect(self.select_agtron_model)
+        self.comboBox_spectrum.setPlaceholderText('Open or choose a spectrum')
+        self.comboBox_spectrum.currentTextChanged.connect(self.select_spectrum)
+        
         '''
         Set the predict button
         '''
@@ -103,7 +113,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         Initialize the toolbar
         '''
-
         toolbar = QToolBar("My main toolbar")
         self.addToolBar(toolbar)
         toolbar.setIconSize(QSize(40, 40))
@@ -124,19 +133,44 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         Open a spectrum file
         '''
-        file_path, _ = QFileDialog.getOpenFileName(
+        file_paths, _ = QFileDialog.getOpenFileNames(
             self,  
             "Open a spectrum file",  
             "",  
-            "Text files (*.txt *.csv *.xlsx)"
-            ) 
-
-        if file_path == "":
+            "Spectrum files (*.csv *.xlsx)"
+            )
+        if file_paths == []:
             return
 
-        else:
-            print(file_path)
-    
+        # if file_path.endswith('.txt'):
+        #     df = read_csv(file_path, header=None)
+        #     self.file_name = file_path.split('/')[-1]
+        #     df = df.to_numpy()
+        #     print(df)
+        #     self.wave = squeeze(df)
+        #     self.plot_wave()
+
+        for file in file_paths:
+
+            if file.endswith('.csv'):
+                df = read_csv(file, header=None)
+                self.file_name = file.split('/')[-1]
+                df = df.to_numpy()
+                self.wave = squeeze(df)
+
+            elif file.endswith('.xlsx'):
+                df = read_excel(file, header=None)
+                self.file_name = file.split('/')[-1]
+                df = df.to_numpy()
+                self.wave = squeeze(df)
+            
+            # if self.waves == {}:
+            #     self.plot_wave()
+
+            if self.file_name not in self.waves:
+                self.comboBox_spectrum.addItem(self.file_name)
+                self.waves[self.file_name] = self.wave
+
     def save_file(self, e):
         '''
         Save coffee infomation
@@ -145,7 +179,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self,  
             "Save as",  
             "",
-            "Text files (*.txt *.csv *.xlsx)"
+            "Text files (*.csv *.xlsx)"
             )  
 
         if file_path == "":
@@ -158,37 +192,66 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.about_window = AboutWindow(self)
         self.about_window.show()
 
-    def predict(self, flavor_model = None , agtron_model = None) -> None:
-        '''Get the Agtron and flavor from predicting models and pass into the label widgets\n
-        Parameters:flavor_model, agtron_model
+    def predict(self):
         '''
+        Get the Agtron and flavor from predicting models and pass into the label widgets
         '''
-        Testing Agtron number
-        '''
-        # pred_agtron = round(random.random() * (106.0 - 60.0) + 60.0, 1)
-        # self.label_agtron.setText(QCoreApplication.translate("MainWindow", f"{pred_agtron:}"))
-        # self.label_agtron.setStatusTip(QCoreApplication.translate("MainWindow", f"Agtron number: {pred_agtron:}"))
+        wave = expand_dims(self.wave, axis=0).copy()
 
         '''
-        Testing flavor
+        Predict Agtron number
         '''
-        # pred_flavor = random.randint(2, size=21)
-        # for f in range(pred_flavor.shape[0]):
-        #     if pred_flavor[f] == 1:
-        #         self.flavor_labels[f].setStyleSheet(f"background-color: {flavor_colors[f]};")
-        #     elif pred_flavor[f] == 0:
-        #         self.flavor_labels[f].setStyleSheet("background-color: rgb(255, 255, 255);")
-        flavor_model = self.comboBox_flavor_model.currentText()
-        test_sample = random.random(900).reshape(1, 900)
-        print(test_sample.shape)
-        if flavor_model.startswith('Res'):
-            model, device = load_model('./lib/saved_models/flavor/' + flavor_model + '.dlcls')
-            model.train_mode = False
-            model.preprocess_func = None
-            model.predict(torch.tensor(test_sample))
+        print(wave[-1][-1])
+        pred_agtron = self.agtron_model.predict(wave)
+        self.label_agtron.setText(QCoreApplication.translate("MainWindow", f"{pred_agtron:.1f}"))
+        self.label_agtron.setStatusTip(QCoreApplication.translate("MainWindow", f"Agtron number: {pred_agtron:.1f}"))
+        
+        '''
+        Predict flavor
+        '''
+        pred_flavor = self.flavor_model.predict(wave)[0]
+        for f in range(len(pred_flavor)):
+            if pred_flavor[f] == 1:
+                self.flavor_labels[f].setStyleSheet(f"background-color: {flavor_colors[f]};")
+            elif pred_flavor[f] == 0:
+                self.flavor_labels[f].setStyleSheet("background-color: rgb(255, 255, 255);")
 
-    def select_model(self, model_name):
-        print(model_name)
+    def select_flavor_model(self, model_name):
+        if model_name.startswith('Support'):
+            self.flavor_model = SVM().load('./SVM.svm')
+        if model_name.startswith('Random'):
+            self.flavor_model = RF().load('./RF.rf')
+        if model_name.startswith('ResNet'):
+            pass
+
+    def select_agtron_model(self, model_name):
+        if model_name.startswith('Narrow'):
+            pass
+        if model_name.startswith('Wide'):
+            pass
+        if model_name.startswith('CARS'):
+            pass
+        if model_name.startswith('ResNet'):
+            model = CoffeeModel()
+            model.load_networks('./ResNet18.pth')
+            self.agtron_model = model
+
+    def select_spectrum(self, spectrum_name):
+        if self.waves == {}:
+            return
+        self.wave = self.waves[spectrum_name]
+        self.file_name = spectrum_name
+        self.plot_wave()
+    
+    def plot_wave(self):
+        self.widget_preview.axes.cla()
+        self.widget_preview.axes.plot(arange(700, 2500, 2), self.wave)
+        self.widget_preview.axes.set_xticks(list(range(700, 2501, 200)))
+        self.widget_preview.axes.set_title(self.file_name)
+        # self.widget_preview.axes.set_axis_off()
+        self.widget_preview.draw()
+
+    
 
 def main():
 

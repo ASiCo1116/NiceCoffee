@@ -1,3 +1,9 @@
 .vscode
 __pycache__
 lib/saved_models
+.DS_Store
+*.rf
+*.svm
+*.pth
+*.pkl
+test_sample/
