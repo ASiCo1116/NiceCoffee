@@ -90,7 +90,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Initialize the interface
         '''
         self.setupUi(self)
-        self.setWindowIcon(QIcon('./lib/icons/ssl_2.png')) 
+        self.setWindowIcon(QIcon('./src/icons/ssl_2.png')) 
         self.setWindowTitle('Nice Coffee App')
         # self.cwd = getcwd()
 
@@ -259,23 +259,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def select_flavor_model(self, model_name):
         if model_name.startswith('Support'):
-            self.flavor_model, _ = load_model('./src/weight/SVM.svm')
+            self.flavor_model, _ = load_model('./weight/SVM.svm')
         if model_name.startswith('Random'):
-            self.flavor_model, _ = load_model('./src/weight/RF.rf')
+            self.flavor_model, _ = load_model('./weight/RF.rf')
         if model_name.startswith('ResNet'):
-            self.flavor_model, _ = load_model('./src/weight/ResNet152_focal.dlcls')
+            self.flavor_model, _ = load_model('./weight/ResNet152_focal.dlcls')
 
     def select_agtron_model(self, model_name):
         if model_name.startswith('Narrow'):
-            self.agtron_model = load_ml_model('./src/weight/Narrow.pkl')['model']#model, ref
+            self.agtron_model = load_ml_model('./weight/Narrow.pkl')['model']#model, ref
         if model_name.startswith('Wide'):
-            self.agtron_model = load_ml_model('./src/weight/Wide.pkl')['model']#model, ref
+            self.agtron_model = load_ml_model('./weight/Wide.pkl')['model']#model, ref
         if model_name.startswith('CARS'):
             self.agtron_model, self.choose_wave = \
-                load_ml_model('./src/weight/Cars.pkl')['model'], load_ml_model('./src/weight/Cars.pkl')['wave_loc']
+                load_ml_model('./weight/Cars.pkl')['model'], load_ml_model('./weight/Cars.pkl')['wave_loc']
         if model_name.startswith('ResNet'):
             model = CoffeeModel()
-            model.load_networks('./src/weight/ResNet18.pth')
+            model.load_networks('./weight/ResNet18.pth')
             self.agtron_model = model
 
     def select_spectrum(self, spectrum_name):
