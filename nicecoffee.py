@@ -43,13 +43,13 @@ flavor_colors = ['rgb(221, 9, 103)'] * 2 + ['rgb(221, 26, 29)'] * 5 + ['rgb(237,
 
 stylesheet = """
     MainWindow {
-        background-image: url("./src/icons/ssl.png"); 
+        background-image: url("./icons/ssl.png"); 
         background-repeat: no-repeat; 
         background-position: center;
     }
 
     AboutWindow {
-        background-image: url("./src/icons/ssl.png"); 
+        background-image: url("./icons/ssl.png"); 
         background-repeat: no-repeat; 
         background-position: center;
     }
@@ -90,9 +90,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Initialize the interface
         '''
         self.setupUi(self)
-        self.setWindowIcon(QIcon('./src/icons/ssl_2.png')) 
+        self.setWindowIcon(QIcon('./icons/ssl_2.png')) 
         self.setWindowTitle('Nice Coffee App')
         # self.cwd = getcwd()
+
+        icon = QIcon()
+        icon.addPixmap(QPixmap("./icons/open.png"), QIcon.Normal, QIcon.Off)
+        self.action_open_spectrum.setIcon(icon)
+
+        icon1 = QIcon()
+        icon1.addPixmap(QPixmap("./icons/about.png"), QIcon.Normal, QIcon.Off)
+        self.action_about.setIcon(icon1)
+
+        icon2 = QIcon()
+        icon2.addPixmap(QPixmap("./icons/save.png"), QIcon.Normal, QIcon.Off)
+        self.action_save_as.setIcon(icon2)
 
         self.file_name = ''
         self.prediction_agtron = 0.0
@@ -219,6 +231,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Get the Agtron and flavor from predicting models and pass into the label widgets
         '''
         wave = expand_dims(self.wave, axis=0).copy()
+        f_wave = wave.copy()
 
         '''
         Predict Agtron number
@@ -249,12 +262,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         Predict flavor
         '''
-        pred_flavor = self.flavor_model.predict(wave)[0]
+        pred_flavor = self.flavor_model.predict(f_wave)[0]
         self.prediction_flavor = list(map(int, pred_flavor))
-        for f in range(len(pred_flavor)):
-            if pred_flavor[f] == 1:
+        for f in range(len(self.prediction_flavor)):
+            if self.prediction_flavor[f] == 1:
                 self.flavor_labels[f].setStyleSheet(f"background-color: {flavor_colors[f]};")
-            elif pred_flavor[f] == 0:
+            elif self.prediction_flavor[f] == 0:
                 self.flavor_labels[f].setStyleSheet("background-color: rgb(255, 255, 255);")
 
     def select_flavor_model(self, model_name):

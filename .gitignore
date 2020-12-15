@@ -9,3 +9,6 @@ lib/saved_models
 *.dlcls
 weight/
 sample/
+build/
+dist/
+*.spec

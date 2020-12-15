@@ -32,7 +32,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Flavor</string>
+         <string>Predicted Flavor Category</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -593,14 +593,14 @@
       <item>
        <widget class="QLabel" name="label_model">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="maximumSize">
          <size>
-          <width>400</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -611,7 +611,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Model</string>
+         <string>Applied Model Selection</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -757,7 +757,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>400</width>
+          <width>16666666</width>
           <height>16777215</height>
          </size>
         </property>
@@ -768,7 +768,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Spectrum</string>
+         <string>Sample Spectrum</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -792,7 +792,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>400</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -833,7 +833,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>400</width>
+          <width>16666666</width>
           <height>16777215</height>
          </size>
         </property>
@@ -844,7 +844,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Preview</string>
+         <string>Spectrum Preview</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -868,14 +868,14 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>400</width>
-          <height>161</height>
+          <width>0</width>
+          <height>150</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>400</width>
-          <height>161</height>
+          <width>16777215</width>
+          <height>150</height>
          </size>
         </property>
         <property name="font">
@@ -909,7 +909,7 @@ p, li { white-space: pre-wrap; }
          <widget class="QPushButton" name="pushButton_predict">
           <property name="maximumSize">
            <size>
-            <width>125</width>
+            <width>238</width>
             <height>16777215</height>
            </size>
           </property>
@@ -931,7 +931,7 @@ p, li { white-space: pre-wrap; }
            <string>Predict flavor and Agtron number</string>
           </property>
           <property name="text">
-           <string>Predict</string>
+           <string>Start Prediction</string>
           </property>
          </widget>
         </item>
@@ -946,12 +946,8 @@ p, li { white-space: pre-wrap; }
    <property name="checkable">
     <bool>false</bool>
    </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>src/icons/open.png</normaloff>src/icons/open.png</iconset>
-   </property>
    <property name="text">
-    <string>open_spectrum</string>
+    <string>open</string>
    </property>
    <property name="toolTip">
     <string>Open a spectrum file</string>
@@ -964,10 +960,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="action_about">
-   <property name="icon">
-    <iconset>
-     <normaloff>src/icons/about.png</normaloff>src/icons/about.png</iconset>
-   </property>
    <property name="text">
     <string>about</string>
    </property>
@@ -981,12 +973,8 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="action_save_as">
-   <property name="icon">
-    <iconset>
-     <normaloff>src/icons/save.png</normaloff>src/icons/save.png</iconset>
-   </property>
    <property name="text">
-    <string>save_as</string>
+    <string>save</string>
    </property>
    <property name="toolTip">
     <string>Save coffee infomation</string>
