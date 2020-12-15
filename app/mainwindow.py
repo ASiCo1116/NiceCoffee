@@ -453,7 +453,7 @@ class Ui_MainWindow(object):
         self.action_open_spectrum = QtWidgets.QAction(MainWindow)
         self.action_open_spectrum.setCheckable(False)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("lib/icons/open.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("src/icons/open.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.action_open_spectrum.setIcon(icon)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -462,7 +462,7 @@ class Ui_MainWindow(object):
         self.action_open_spectrum.setObjectName("action_open_spectrum")
         self.action_about = QtWidgets.QAction(MainWindow)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("lib/icons/about.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("src/icons/about.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.action_about.setIcon(icon1)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -470,7 +470,7 @@ class Ui_MainWindow(object):
         self.action_about.setObjectName("action_about")
         self.action_save_as = QtWidgets.QAction(MainWindow)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("lib/icons/save.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("src/icons/save.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.action_save_as.setIcon(icon2)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -555,4 +555,4 @@ class Ui_MainWindow(object):
         self.action_about.setToolTip(_translate("MainWindow", "About this app"))
         self.action_save_as.setText(_translate("MainWindow", "save_as"))
         self.action_save_as.setToolTip(_translate("MainWindow", "Save coffee infomation"))
-from mplcanvas import MplCanvas
+from .mplcanvas import MplCanvas

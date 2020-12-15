@@ -81,9 +81,9 @@ class DeepLearningModule(nn.Module, BaseModule):
         self.verbose = False
 
     def predict(self, *input, return_type = 'origin'):
-        if not self.train_mode:
-            input = self._preprocess(*input)
-
+        # if not self.train_mode:
+        # input = self._preprocess(*input)
+        input = torch.tensor(np.expand_dims(input, axis=0)).float()
         output = self.forward(*input)
 
         if isinstance(output, (list, tuple)):

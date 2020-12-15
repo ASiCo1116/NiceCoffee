@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# from matplotlib.pyplot import plot, 
 from pandas import read_excel, read_csv
-from numpy import random, zeros, where, genfromtxt, arange, squeeze, expand_dims
+from numpy import random, zeros, where, genfromtxt, arange, squeeze, expand_dims, round
 from sys import argv
 from os import getcwd
 from PyQt5.QtGui import (
@@ -29,9 +28,15 @@ from PyQt5.QtWidgets import (
     QWidget,
     QStyle
     )
-from mainwindow import Ui_MainWindow
+from app import Ui_MainWindow
 from src.model import CoffeeModel
-from lib.model import SVM, RF, NIRResNet152
+from src.preprocess import MSC, SG
+from src.msc_ref import pure_msc_ref, sg_then_msc_ref
+from lib.model import load_model
+from pickle import load
+from csv import writer
+
+flavor_categories = 'Floral, Tea-like, Tropical Fruit, Stone Fruit, Citrus Fruit, Berry Fruit, Other Fruit, Sour, Alcohol, Fermented, Fresh Vegetable, Dry Vegetable, Papery/Musty, Chemical, Burnt, Cereal, Spices, Nutty, Cocoa, Sweet, Butter/Milky'.split(', ')
 
 flavor_colors = ['rgb(221, 9, 103)'] * 2 + ['rgb(221, 26, 29)'] * 5 + ['rgb(237, 181, 3)'] * 3 + ['rgb(21, 123, 43)'] * 2 + \
     ['rgb(6, 163, 183)'] * 2 + ['rgb(203, 72, 41)'] * 2 + ['rgb(175, 31, 59)'] + ['rgb(169, 123, 98)'] * 2 + ['rgb(233, 87, 39)'] * 2
@@ -49,6 +54,10 @@ stylesheet = """
         background-position: center;
     }
 """
+
+def load_ml_model(path):
+    with open(path, 'rb') as handle:
+        return load(handle)
 
 class AboutWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -85,16 +94,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle('Nice Coffee App')
         # self.cwd = getcwd()
 
+        self.file_name = ''
+        self.prediction_agtron = 0.0
+        self.prediction_flavor = [0]
         self.agtron_model = None
-        self.flavor_model = SVM().load('./SVM.svm')
-
+        self.flavor_model = None
+        self.choose_wave = []
         self.waves = {}
         self.flavor_labels = [
             self.label_floral, self.label_tealike, self.label_tropical, self.label_stone, self.label_citrus, self.label_berry, self.label_other, \
             self.label_sour, self.label_alcohol, self.label_fermented, self.label_fresh, self.label_dry, self.label_papery, self.label_chemical, \
             self.label_burnt, self.label_cereal, self.label_spices, self.label_nutty, self.label_cocoa, self.label_sweet, self.label_butter
             ]
-
+        self.comboBox_flavor_model.setPlaceholderText('Choose a flavor model')
+        self.comboBox_agtron_model.setPlaceholderText('Choose an Agtron model')
         self.comboBox_flavor_model.addItems(['Support vector machine (SVM)', 'Random forest (RF)', 'ResNet152focal (DCNN)'])
         self.comboBox_flavor_model.currentTextChanged.connect(self.select_flavor_model)
         self.comboBox_agtron_model.addItems(['Narrow (700-900, 1160-1260)', 'Wide (700-2500)', 'CARS (selected wavenumbers)', 'ResNet18 (DCNN)'])
@@ -155,18 +168,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if file.endswith('.csv'):
                 df = read_csv(file, header=None)
                 self.file_name = file.split('/')[-1]
+                self.file_name = self.file_name.split('.csv')[0]
                 df = df.to_numpy()
                 self.wave = squeeze(df)
 
             elif file.endswith('.xlsx'):
                 df = read_excel(file, header=None)
                 self.file_name = file.split('/')[-1]
+                self.file_name = self.file_name.split('.xlsx')[0]
                 df = df.to_numpy()
                 self.wave = squeeze(df)
             
-            # if self.waves == {}:
-            #     self.plot_wave()
-
             if self.file_name not in self.waves:
                 self.comboBox_spectrum.addItem(self.file_name)
                 self.waves[self.file_name] = self.wave
@@ -178,21 +190,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file_path, _ = QFileDialog.getSaveFileName(
             self,  
             "Save as",  
-            "",
-            "Text files (*.csv *.xlsx)"
+            f"{self.file_name}_prediction.csv",
+            "Csv files (*.csv)"
             )  
 
         if file_path == "":
             return
 
         else:
-            print(file_path)
+            with open(f'{file_path}', 'w', newline='') as handle:
+                c = writer(handle)
+                c.writerow(['flavor model', f'{self.comboBox_flavor_model.currentText()}', 'Agtron model', f'{self.comboBox_agtron_model.currentText()}'])
+                c.writerow(['Agtron number', f'{self.prediction_agtron}'])
+                c.writerow(flavor_categories)
+                c.writerow(self.prediction_flavor)
 
     def open_about_window(self):
         self.about_window = AboutWindow(self)
         self.about_window.show()
 
     def predict(self):
+        if "choose" in (self.comboBox_agtron_model.currentText().lower() \
+            and self.comboBox_flavor_model.currentText().lower() \
+            and self.comboBox_spectrum.currentText()):
+            return
+
         '''
         Get the Agtron and flavor from predicting models and pass into the label widgets
         '''
@@ -201,8 +223,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         Predict Agtron number
         '''
-        print(wave[-1][-1])
-        pred_agtron = self.agtron_model.predict(wave)
+        if self.comboBox_agtron_model.currentText().startswith('Narrow'):
+            wave_range = list(range(101))
+            w2 = list(range(230, 281))
+            wave_range.extend(w2)
+            w, _ = MSC(wave, pure_msc_ref)
+
+            pred_agtron = self.agtron_model.predict(w[:, wave_range])[0][0]
+
+        elif self.comboBox_agtron_model.currentText().startswith('Wide'):
+            w, _ = MSC(wave, pure_msc_ref)
+            pred_agtron = self.agtron_model.predict(w.reshape(1, -1))[0][0]
+        
+        elif self.comboBox_agtron_model.currentText().startswith('CARS'):
+            sg_wave = SG(wave, "SG_w5_p2_d1")
+            w, _ = MSC(sg_wave, sg_then_msc_ref)
+            pred_agtron = self.agtron_model.predict(w[:, self.choose_wave])[0][0]
+        else:
+            pred_agtron = self.agtron_model.predict(wave)
+            
+        self.prediction_agtron = round(pred_agtron, 1)
         self.label_agtron.setText(QCoreApplication.translate("MainWindow", f"{pred_agtron:.1f}"))
         self.label_agtron.setStatusTip(QCoreApplication.translate("MainWindow", f"Agtron number: {pred_agtron:.1f}"))
         
@@ -210,6 +250,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Predict flavor
         '''
         pred_flavor = self.flavor_model.predict(wave)[0]
+        self.prediction_flavor = list(map(int, pred_flavor))
         for f in range(len(pred_flavor)):
             if pred_flavor[f] == 1:
                 self.flavor_labels[f].setStyleSheet(f"background-color: {flavor_colors[f]};")
@@ -218,22 +259,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def select_flavor_model(self, model_name):
         if model_name.startswith('Support'):
-            self.flavor_model = SVM().load('./SVM.svm')
+            self.flavor_model, _ = load_model('./src/weight/SVM.svm')
         if model_name.startswith('Random'):
-            self.flavor_model = RF().load('./RF.rf')
+            self.flavor_model, _ = load_model('./src/weight/RF.rf')
         if model_name.startswith('ResNet'):
-            pass
+            self.flavor_model, _ = load_model('./src/weight/ResNet152_focal.dlcls')
 
     def select_agtron_model(self, model_name):
         if model_name.startswith('Narrow'):
-            pass
+            self.agtron_model = load_ml_model('./src/weight/Narrow.pkl')['model']#model, ref
         if model_name.startswith('Wide'):
-            pass
+            self.agtron_model = load_ml_model('./src/weight/Wide.pkl')['model']#model, ref
         if model_name.startswith('CARS'):
-            pass
+            self.agtron_model, self.choose_wave = \
+                load_ml_model('./src/weight/Cars.pkl')['model'], load_ml_model('./src/weight/Cars.pkl')['wave_loc']
         if model_name.startswith('ResNet'):
             model = CoffeeModel()
-            model.load_networks('./ResNet18.pth')
+            model.load_networks('./src/weight/ResNet18.pth')
             self.agtron_model = model
 
     def select_spectrum(self, spectrum_name):
@@ -241,58 +283,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         self.wave = self.waves[spectrum_name]
         self.file_name = spectrum_name
-        self.plot_wave()
+        self.plot_wave(self.wave, self.file_name)
     
-    def plot_wave(self):
+    def plot_wave(self, wave, title = None):
         self.widget_preview.axes.cla()
-        self.widget_preview.axes.plot(arange(700, 2500, 2), self.wave)
+        self.widget_preview.axes.plot(arange(700, 2500, 2), wave)
         self.widget_preview.axes.set_xticks(list(range(700, 2501, 200)))
-        self.widget_preview.axes.set_title(self.file_name)
+        if not title:
+            self.widget_preview.axes.set_title(self.file_name)
+        else:
+            self.widget_preview.axes.set_title(title)
         # self.widget_preview.axes.set_axis_off()
         self.widget_preview.draw()
 
     
 
 def main():
-
-    # darkPalette = QPalette()
-    # darkPalette.setColor(QPalette.Window, QColor(53, 53, 53))
-    # darkPalette.setColor(QPalette.WindowText, Qt.white)
-    # darkPalette.setColor(QPalette.Disabled, QPalette.WindowText, QColor
-    # (127, 127, 127))
-    # darkPalette.setColor(QPalette.Base, QColor(42, 42, 42))
-    # darkPalette.setColor(QPalette.AlternateBase, QColor(66, 66, 66))
-    # darkPalette.setColor(QPalette.ToolTipBase, Qt.white)
-    # darkPalette.setColor(QPalette.ToolTipText, Qt.white)
-    # darkPalette.setColor(QPalette.Text, Qt.white)
-    # darkPalette.setColor(QPalette.Disabled, QPalette.Text, QColor(127,
-    # 127, 127))
-    # darkPalette.setColor(QPalette.Dark, QColor(35, 35, 35))
-    # darkPalette.setColor(QPalette.Shadow, QColor(20, 20, 20))
-    # darkPalette.setColor(QPalette.Button, QColor(53, 53, 53))
-    # darkPalette.setColor(QPalette.ButtonText, Qt.white)
-    # darkPalette.setColor(QPalette.Disabled, QPalette.ButtonText, QColor
-    # (127, 127, 127))
-    # darkPalette.setColor(QPalette.BrightText, Qt.red)
-    # darkPalette.setColor(QPalette.Link, QColor(42, 130, 218))
-    # darkPalette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-    # darkPalette.setColor(QPalette.Disabled, QPalette.Highlight, QColor(80,
-    # 80, 80))
-    # darkPalette.setColor(QPalette.HighlightedText, Qt.white)
-    # darkPalette.setColor(QPalette.Disabled, QPalette.HighlightedText,
-    # QColor(127, 127, 127))
     
     app = QApplication(argv)
     app.setStyleSheet(stylesheet)
     app.setStyle('Fusion')
-    # app.setPalette(darkPalette)
 
     window = MainWindow()
     window.show()
 
-    # qtmodern.styles.dark(app)
-    # mw = qtmodern.windows.ModernWindow(window)
-    # mw.show()
     app.exec()
 
 if __name__ == "__main__":

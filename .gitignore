@@ -6,4 +6,6 @@ lib/saved_models
 *.svm
 *.pth
 *.pkl
-test_sample/
+*.dlcls
+weight/
+sample/
